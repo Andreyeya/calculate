@@ -1,0 +1,54 @@
+from src.calculator import calculate
+from src.rpn_converter import to_rpn
+
+
+def main():
+    print("=== Калькулятор с ОПН ===")
+    print("Поддерживаемые операции: +, -, *, /, ^")
+    print("Поддержка скобок: ( )")
+    print("Для выхода введите: exit, quit или q")
+    print("Для прерывания нажмите: Ctrl+C\n")
+
+    while True:
+        try:
+            # Запрос ввода у пользователя
+            expression = input("Введите выражение: ").strip()
+
+            # Проверка на выход
+            if expression.lower() in ['exit', 'quit', 'q', 'выход']:
+                print("До свидания!")
+                break
+
+            # Если пусто — пропускаем
+            if not expression:
+                continue
+
+            # Преобразование в ОПН
+            rpn = to_rpn(expression)
+            rpn_string = ' '.join(rpn)
+
+            # Вычисление результата
+            result = calculate(expression)
+
+            # Вывод
+            print(f" ОПН: {rpn_string}")
+            print(f" Результат: {result}\n")
+
+        except KeyboardInterrupt:
+            # Обработка Ctrl+C
+            print("\n\nПрограмма прервана пользователем")
+            print("До свидания!")
+            break
+
+        except ZeroDivisionError as e:
+            print(f" Ошибка: Деление на ноль\n")
+
+        except IndexError:
+            print(f" Ошибка: Некорректное выражение\n")
+
+        except Exception as e:
+            print(f" Ошибка ввода: {e}\n")
+
+
+if __name__ == "__main__":
+    main()
